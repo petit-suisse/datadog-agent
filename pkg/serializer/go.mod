@@ -2,6 +2,8 @@ module github.com/DataDog/datadog-agent/pkg/serializer
 
 go 1.23.0
 
+toolchain go1.24.1
+
 require (
 	github.com/DataDog/agent-payload/v5 v5.0.145
 	github.com/DataDog/datadog-agent/comp/core/config v0.64.0-devel
@@ -27,7 +29,7 @@ require (
 	github.com/protocolbuffers/protoscope v0.0.0-20221109213918-8e7a6aafa2c9
 	github.com/richardartoul/molecule v1.0.1-0.20240531184615-7ca0df43c0b3
 	github.com/stretchr/testify v1.10.0
-	google.golang.org/protobuf v1.36.5
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
