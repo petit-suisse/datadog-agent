@@ -2,7 +2,7 @@ module github.com/DataDog/datadog-agent
 
 go 1.23.0
 
-toolchain go1.23.6
+toolchain go1.24.1
 
 // v0.8.0 was tagged long ago, and appared on pkg.go.dev.  We do not want any tagged version
 // to appear there.  The trick to accomplish this is to make a new version (in this case v0.9.0)
@@ -644,7 +644,7 @@ require (
 	github.com/prometheus-community/pro-bing v0.4.1
 	github.com/rickar/props v1.0.0
 	github.com/sijms/go-ora/v2 v2.8.24
-	github.com/swaggest/jsonschema-go v0.3.70
+	github.com/swaggest/jsonschema-go v0.3.73
 	github.com/valyala/fastjson v1.6.4
 	github.com/vibrantbyte/go-antpath v1.1.1
 	go.opentelemetry.io/collector/confmap/provider/envprovider v1.27.0
