@@ -3,9 +3,9 @@ updates:
   - package-ecosystem: gomod
     directories:
       - /
-      - /comp/*
-      - /pkg/*
-      - /test/*
+      - /comp/**/*
+      - /pkg/**/*
+      - /test/**/*
     labels:
       - dependencies
       - dependencies-go
