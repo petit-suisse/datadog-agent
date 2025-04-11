@@ -44,6 +44,6 @@ jobs:
         uses: asana/push-signed-commits@d615ca88d8e1a946734c24970d1e7a6c56f34897 # v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          local_branch_name: ${{ github.ref }}
+          local_branch_name: ${{ github.head_ref }}
           remote_name: "origin"
           remote_branch_name: "main"
