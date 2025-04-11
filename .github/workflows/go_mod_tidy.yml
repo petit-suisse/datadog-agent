@@ -49,4 +49,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           local_branch_name: ${{ github.head_ref }}
           remote_name: "origin"
-          remote_branch_name: "main"
+          remote_branch_name: ${{ github.head_ref }}
