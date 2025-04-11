@@ -4,12 +4,11 @@ on:
     types:
       - labeled
 
+permissions: {} # Permissions no more needed as we use a Github App token to push the changes
 jobs:
   mod_tidy_and_generate_licenses:
-    if: ${{ github.repository == 'petit-suisse/datadog-agent' && github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'dependencies-go') }}
+    if: ${{ github.repository == 'DataDog/datadog-agent' && github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'dependencies-go') }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -19,7 +18,7 @@ jobs:
         with:
           go-version-file: ".go-version"
       - name: Install python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5.5.0
         with:
           python-version-file: .python-version
       - name: Install dda
@@ -27,21 +26,29 @@ jobs:
         with:
           features: legacy-tasks
       - name: Go mod tidy
-        run: dda inv -e tidy
+        run: dda inv -- -e tidy
       - name: Update LICENSE-3rdparty.csv
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'dependencies-go-tools') }}
         run: |
-          dda inv -e install-tools
-          dda inv -e generate-licenses
+          dda inv -- -e install-tools
+          dda inv -- -e generate-licenses
       - name: Update mocks
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'dependencies-go-tools') }}
-        run: dda inv -e security-agent.gen-mocks # generate both security agent and process mocks
-      - uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
-        id: autocommit
-        with:
-          commit_message: "[dependabot skip] Auto-generate go.sum and LICENSE-3rdparty.csv changes"
-      - name: changes
-        env:
-          CHANGES: ${{ steps.autocommit.outputs.changes_detected }}
+        run: dda inv -- -e security-agent.gen-mocks # generate both security agent and process mocks
+      - name: Create commit
         run: |
-          echo "Changes detected: $CHANGES"
+          git config --global user.name "Login will be determined by the Github API based on the creator of the token"
+          git config --global user.email ""
+          git commit -am "[dependabot skip] Auto-generate go.sum and LICENSE-3rdparty.csv changes"
+      - uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
+        id: app-token
+        with:
+          app-id: ${{ vars.DD_GITHUB_TOKEN_GENERATOR_APP_ID }}
+          private-key: ${{ secrets.DD_GITHUB_TOKEN_GENERATOR_PRIVATE_KEY }}
+      - name: "Push signed commits"
+        uses: asana/push-signed-commits@d615ca88d8e1a946734c24970d1e7a6c56f34897 # v1
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          local_branch_name: "main"
+          remote_name: "origin"
+          remote_branch_name: "main"
