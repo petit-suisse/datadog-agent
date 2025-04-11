@@ -9,6 +9,8 @@ jobs:
   mod_tidy_and_generate_licenses:
     if: ${{ github.repository == 'petit-suisse/datadog-agent' && github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'dependencies-go') }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
