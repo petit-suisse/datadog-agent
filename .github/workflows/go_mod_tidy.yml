@@ -6,7 +6,7 @@ on:
 
 jobs:
   mod_tidy_and_generate_licenses:
-    if: ${{ github.repository == 'DataDog/datadog-agent' && github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'dependencies-go') }}
+    if: ${{ github.repository == 'petit-suisse/datadog-agent' && github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'dependencies-go') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -40,7 +40,7 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
         id: autocommit
         with:
-          commit_message: Auto-generate go.sum and LICENSE-3rdparty.csv changes
+          commit_message: "[dependabot skip] Auto-generate go.sum and LICENSE-3rdparty.csv changes"
       - name: changes
         env:
           CHANGES: ${{ steps.autocommit.outputs.changes_detected }}
