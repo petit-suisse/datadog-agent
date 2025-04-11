@@ -40,15 +40,10 @@ jobs:
           git config --global user.name "Login will be determined by the Github API based on the creator of the token"
           git config --global user.email ""
           git commit -am "[dependabot skip] Auto-generate go.sum and LICENSE-3rdparty.csv changes"
-      - uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
-        id: app-token
-        with:
-          app-id: ${{ vars.DD_GITHUB_TOKEN_GENERATOR_APP_ID }}
-          private-key: ${{ secrets.DD_GITHUB_TOKEN_GENERATOR_PRIVATE_KEY }}
       - name: "Push signed commits"
         uses: asana/push-signed-commits@d615ca88d8e1a946734c24970d1e7a6c56f34897 # v1
         with:
-          github-token: ${{ steps.app-token.outputs.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           local_branch_name: "main"
           remote_name: "origin"
           remote_branch_name: "main"
